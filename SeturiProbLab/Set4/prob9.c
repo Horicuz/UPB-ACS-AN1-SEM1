@@ -17,20 +17,26 @@ int main()
     }
 
     int k;
+    int a = 0;
     scanf("%d", &k);
     for(int i = 0; i<n; i++)
     {
         if(k < v[i])
         {
-            for(int j = ++n; j>i; j--)
-                v[j] = v[--j];
+            a = 1;
+            for(int j = n; j>i; j--)
+                v[j] = v[j-1];
             v[i] = k;
             i = n;
-            break;
         }
     }
+    if(a == 0)
+        {
+            v[n] = k;
+        }
 
-    for(int i = 0; i<n; i++)
+
+    for(int i = 0; i<n+1; i++)
     {
         printf("%d ", v[i]);
     }
