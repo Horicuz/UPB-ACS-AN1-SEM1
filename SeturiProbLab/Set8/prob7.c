@@ -39,16 +39,18 @@ void cautare_carte(Autor scriitor, carte biblioteca[], int n)
         printf("Nu exista carti scrise de acest autor!\n");
 }
 
-void frecv_autor_max(Autor scriitor, carte biblioteca[], int n, int *frecv_autor)
+void frecv_autor_max(carte biblioteca[], int n, int *frecv_autor)
 {
     int i;
-    for(i=0;i<n;i++)
-    {
-        if(strcmp(scriitor.nume,biblioteca[i].autor.nume)==0 && strcmp(scriitor.prenume,biblioteca[i].autor.prenume)==0)
+    for(int i = 0;i<n;i++)
+        for(int j = i+1;j<n;j++)
         {
-            frecv_autor[i]++;
+            if(strcmp(biblioteca[i].autor.nume,biblioteca[j].autor.nume)==0 && strcmp(biblioteca[i].autor.prenume,biblioteca[j].autor.prenume)==0)
+            {
+                frecv_autor[i]++;
+                frecv_autor[j]++;
+            }
         }
-    }
     int frecv_max = 0;
     for(int i = 0;i<n;i++)
     {
@@ -86,10 +88,23 @@ void cautare_carte2(int an, char gen, carte biblioteca[], int n)
 
 }
 
-void ordonare_crescatoare_lexicografica()
+void ordonare_crescatoare_lexicografica(carte biblioteca[], int n)
 {
+    for(int i = 0;i<n;i++)
+    {
+        for(int j = i+1;j<n;j++)
+        {
+            if(strcmp(biblioteca[i].titlu,biblioteca[j].titlu)>0)
+            {
+                carte aux = biblioteca[i];
+                biblioteca[i] = biblioteca[j];
+                biblioteca[j] = aux;
+            }
+        }
+    }  
     
 }
+
 
 int main()
 {
@@ -116,13 +131,14 @@ for(int i = 0;i<n;i++)
     getchar();
 }
     printf("Cautati o carte dupa numele unui scriitor: \n");
+
     Autor scriitor;
     scanf("%s%s",&scriitor.nume,&scriitor.prenume);
 
     cautare_carte(scriitor,biblioteca,n);
     printf("\n");
 
-    frecv_autor_max(scriitor,biblioteca,n,frecv_autor);
+    frecv_autor_max(biblioteca,n,frecv_autor);
     printf("\n");
 
     printf("Cautati o carte dupa an si gen: \n");
@@ -134,6 +150,16 @@ for(int i = 0;i<n;i++)
     getchar();
 
     cautare_carte2(an,gen,biblioteca,n);
+
+    printf("Ordonare crescatoare lexicografica: \n");
+    ordonare_crescatoare_lexicografica(biblioteca,n);
+
+    for(int i = 0;i<n;i++)
+    {
+        printf("Titlu: %s\n",biblioteca[i].titlu);
+        
+        printf("\n");
+    }
 
     free(biblioteca);
     free(frecv_autor);
